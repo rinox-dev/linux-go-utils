@@ -10,12 +10,14 @@ for target in amd64 riscv64; do
   mkdir -p "$out"
   echo "Building Linux/$target utilities..."
   CGO_ENABLED=0 GOOS=linux GOARCH="$target" "$go_cmd" build -trimpath -o "$out/monitor" ./cmd/monitor
-  while read -r name _; do
+
+  pkgs=()
+  while IFS= read -r name; do
     [[ -n "$name" ]] || continue
-    [[ ! -L "$out/$name" ]] || unlink "$out/$name"
-    cp "$out/monitor" "$out/$name"
-    chmod 0755 "$out/$name"
-  done < <("$go_cmd" run ./cmd/monitor list)
+    pkgs+=("./cmd/$name")
+  done < <("$go_cmd" run ./cmd/monitor list | awk '{print $1}')
+
+  CGO_ENABLED=0 GOOS=linux GOARCH="$target" "$go_cmd" build -trimpath -o "$out/" "${pkgs[@]}"
   count=$(find "$out" -maxdepth 1 -type f ! -name monitor | wc -l)
   [[ "$count" -eq 100 ]] || { echo "Expected 100 utilities for $target, found $count" >&2; exit 1; }
   tar -C dist -cf - "linux-$target" | xz -T0 -9e > "dist/linux-$target.tar.xz"
