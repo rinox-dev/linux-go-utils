@@ -3,8 +3,8 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"path/filepath"
+	"strings"
 
 	"linux-go-utils/internal/sys"
 )

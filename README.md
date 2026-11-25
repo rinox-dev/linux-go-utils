@@ -10,19 +10,19 @@ Install Go, then run:
 ./scripts/build-all.sh
 ```
 
-The script compiles one independent executable per utility, plus the `monitor` dispatcher, for both architectures:
+The script compiles one independent executable per utility, plus a `monitor` command catalog, for both architectures:
 
 ```text
 dist/linux-amd64/bin/
 dist/linux-riscv64/bin/
 ```
 
-Compressed release archives are also written to `dist/linux-amd64.tar.xz` and `dist/linux-riscv64.tar.xz`. Run an executable directly or use the dispatcher:
+Compressed release archives are also written to `dist/linux-amd64.tar.xz` and `dist/linux-riscv64.tar.xz`. Run each executable directly; `monitor` only prints the command catalog:
 
 ```sh
 ./dist/linux-amd64/bin/hostinfo
 ./dist/linux-amd64/bin/monitor list
-./dist/linux-amd64/bin/monitor psfind go
+./dist/linux-amd64/bin/psfind go
 ```
 
 For local development, use Go directly:

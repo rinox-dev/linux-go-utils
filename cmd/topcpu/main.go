@@ -3,8 +3,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"sort"
+	"time"
 
 	"linux-go-utils/internal/sys"
 )

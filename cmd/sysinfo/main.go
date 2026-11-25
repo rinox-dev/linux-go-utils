@@ -1,10 +1,10 @@
-// sysinfo prints basic host information from the Linux procfs and uname.
+// sysinfo prints basic host information from Linux kernel interfaces.
 package main
 
 import (
 	"fmt"
 	"os"
-	"os/exec"
+	"runtime"
 	"strings"
 )
 
@@ -23,12 +23,10 @@ func main() {
 			}
 		}
 	}
-	if out, err := exec.Command("uname", "-r", "-m").Output(); err == nil {
-		fields := strings.Fields(string(out))
-		if len(fields) >= 2 {
-			fmt.Printf("Kernel: %s\nArchitecture: %s\n", fields[0], fields[1])
-		}
+	if data, err := os.ReadFile("/proc/sys/kernel/osrelease"); err == nil {
+		fmt.Printf("Kernel: %s\n", strings.TrimSpace(string(data)))
 	}
+	fmt.Printf("Architecture: %s\n", runtime.GOARCH)
 	if data, err := os.ReadFile("/proc/loadavg"); err == nil {
 		fields := strings.Fields(string(data))
 		if len(fields) >= 3 {
