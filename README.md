@@ -10,14 +10,14 @@ Install Go, then run:
 ./scripts/build-all.sh
 ```
 
-The script creates architecture-specific binaries and command-name symlinks:
+The script creates 100 independent executable files per architecture, plus the `monitor` dispatcher:
 
 ```text
 dist/linux-amd64/bin/
 dist/linux-riscv64/bin/
 ```
 
-Each command is a symlink to the shared `monitor` binary. The invoked command name selects the utility. You can run a command directly or use the dispatcher:
+Each named executable selects its utility from its own filename. Compressed release archives are also written to `dist/linux-amd64.tar.xz` and `dist/linux-riscv64.tar.xz`. Run an executable directly or use the dispatcher:
 
 ```sh
 ./dist/linux-amd64/bin/hostinfo
